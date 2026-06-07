@@ -1,0 +1,22 @@
+[project]
+name = "medallion-lakehouse-pipeline"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "apache-airflow==2.9.1",
+    "apache-airflow-providers-apache-spark==4.7.1",
+    "chispa==0.9.4",
+    "dbt-core==1.8.0",
+    "dbt-spark==1.8.0",
+    "delta-spark==3.1.0",
+    "great-expectations==0.18.16",
+    "pydantic>=2.9.0",
+    "pyspark==3.5.1",
+    "pytest==8.2.0",
+    "pytest-cov==5.0.0",
+    "python-dotenv==1.0.1",
+    "ruff==0.4.4",
+    "sqlfluff==3.0.5",
+]
