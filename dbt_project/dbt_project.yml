@@ -1,0 +1,43 @@
+name: 'medallion_lakehouse'
+version: '1.0.0'
+config-version: 2
+
+profile: 'medallion_lakehouse'
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+docs-paths: ["docs"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  medallion_lakehouse:
+    staging:
+      +materialized: view
+      +schema: silver_staging
+      +tags: ["staging"]
+    intermediate:
+      +materialized: ephemeral
+      +tags: ["intermediate"]
+    marts:
+      +materialized: table
+      +schema: gold
+      +tags: ["gold"]
+      fact_trips:
+        +materialized: incremental
+        +incremental_strategy: merge
+        +unique_key: trip_sk
+      agg_daily_zone_summary:
+        +materialized: incremental
+        +incremental_strategy: merge
+        +unique_key: ["pickup_date", "pickup_zone_id"]
+
+vars:
+  # Used in incremental models to bound lookback window
+  # Override at runtime: dbt run --vars '{"start_date": "2024-01-01"}'
+  start_date: "2024-01-01"
+  end_date: "{{ run_started_at.strftime('%Y-%m-%d') }}"
